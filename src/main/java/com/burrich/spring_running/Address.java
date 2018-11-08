@@ -59,4 +59,8 @@ public class Address {
     public String getCountry() {
         return country;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
