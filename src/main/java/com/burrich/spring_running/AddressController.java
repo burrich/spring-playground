@@ -1,4 +1,4 @@
-package running;
+package com.burrich.spring_running;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

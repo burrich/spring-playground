@@ -1,4 +1,4 @@
-package running;
+package com.burrich.spring_running;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

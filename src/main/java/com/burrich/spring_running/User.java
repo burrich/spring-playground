@@ -1,4 +1,4 @@
-package running;
+package com.burrich.spring_running;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
