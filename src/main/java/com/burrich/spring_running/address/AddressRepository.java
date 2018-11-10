@@ -1,4 +1,4 @@
-package com.burrich.spring_running;
+package com.burrich.spring_running.address;
 
 import org.springframework.data.repository.CrudRepository;
 

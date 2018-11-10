@@ -1,4 +1,4 @@
-package com.burrich.spring_running;
+package com.burrich.spring_running.address;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,39 +10,30 @@ import java.util.Optional;
 public class AddressController {
 
     @Autowired
-    private AddressRepository addressRepository;
+    AddressServiceImpl addressService;
 
     @GetMapping
     public Iterable<Address> getAllAddresses() {
-        return addressRepository.findAll();
+        return addressService.findAll();
     }
 
     @GetMapping("/{id}")
     public Optional<Address> getAddressById(@PathVariable Integer id)  {
-        return addressRepository.findById(id);
+        return addressService.findById(id);
     }
 
     @PostMapping
     public String addNewAddress(@RequestBody Address address) {
-        addressRepository.save(address);
-        return "Address saved";
+        return addressService.create(address);
     }
 
     @PutMapping("/{id}")
     public String updateAddress(@PathVariable Integer id, @RequestBody Address address) {
-        if (!addressRepository.existsById(id)) {
-            return "Id doesn't exist";
-        }
-
-        address.setId(id);
-        addressRepository.save(address);
-
-        return "Address updated";
+        return addressService.update(id, address);
     }
 
     @DeleteMapping("/{id}")
     public String removeAddress(@PathVariable Integer id) {
-        addressRepository.deleteById(id);
-        return "Address Deleted";
+        return addressService.delete(id);
     }
 }

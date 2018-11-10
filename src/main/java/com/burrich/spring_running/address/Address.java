@@ -1,4 +1,4 @@
-package com.burrich.spring_running;
+package com.burrich.spring_running.address;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

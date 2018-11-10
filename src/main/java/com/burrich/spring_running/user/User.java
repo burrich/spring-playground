@@ -1,4 +1,4 @@
-package com.burrich.spring_running;
+package com.burrich.spring_running.user;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
