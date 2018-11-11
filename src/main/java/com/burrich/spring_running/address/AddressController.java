@@ -19,7 +19,7 @@ public class AddressController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Address> getAddressById(@PathVariable Integer id)  {
+    public Address getAddressById(@PathVariable Integer id)  {
         return addressService.findById(id);
     }
 
