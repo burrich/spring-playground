@@ -1,6 +1,7 @@
 package com.burrich.spring_running.address;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,17 +24,19 @@ public class AddressController {
     }
 
     @PostMapping
-    public String addNewAddress(@RequestBody Address address) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Address addNewAddress(@RequestBody Address address) {
         return addressService.create(address);
     }
 
     @PutMapping("/{id}")
-    public String updateAddress(@PathVariable Integer id, @RequestBody Address address) {
+    public Address updateAddress(@PathVariable Integer id, @RequestBody Address address) {
         return addressService.update(id, address);
     }
 
     @DeleteMapping("/{id}")
-    public String removeAddress(@PathVariable Integer id) {
-        return addressService.delete(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeAddress(@PathVariable Integer id) {
+        addressService.delete(id);
     }
 }

@@ -6,7 +6,7 @@ public interface AddressService {
 
     Iterable<Address> findAll();
     Optional<Address> findById(Integer id);
-    String create(Address address);
-    String update(Integer id, Address address);
-    String delete(Integer id);
+    Address create(Address address);
+    Address update(Integer id, Address address);
+    void delete(Integer id);
 }

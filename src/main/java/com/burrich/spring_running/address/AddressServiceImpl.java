@@ -22,26 +22,22 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public String create(Address address) {
-        addressRepository.save(address);
-        return "Address saved";
+    public Address create(Address address) {
+        return addressRepository.save(address);
     }
 
     @Override
-    public String update(Integer id, Address address) {
+    public Address update(Integer id, Address address) {
         if (!addressRepository.existsById(id)) {
-            return "Id doesn't exist";
+            return null;
         }
 
         address.setId(id);
-        addressRepository.save(address);
-
-        return "Address updated";
+        return addressRepository.save(address);
     }
 
     @Override
-    public String delete(Integer id) {
+    public void delete(Integer id) {
         addressRepository.deleteById(id);
-        return "Address Deleted";
     }
 }
