@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/addresses")
 public class AddressController {
 
     @Autowired
-    AddressServiceImpl addressService;
+    AddressService addressService;
 
     @GetMapping
-    public Iterable<Address> getAllAddresses() {
+    public List<Address> getAllAddresses() {
         return addressService.findAll();
     }
 

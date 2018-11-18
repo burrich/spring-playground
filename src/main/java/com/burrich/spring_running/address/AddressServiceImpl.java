@@ -3,6 +3,8 @@ package com.burrich.spring_running.address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 // TODO: error handling (create) => model validation
 // TODO: exist method (refactoring)
 
@@ -13,7 +15,7 @@ public class AddressServiceImpl implements AddressService {
     private AddressRepository addressRepository;
 
     @Override
-    public Iterable<Address> findAll() {
+    public List<Address> findAll() {
         return addressRepository.findAll();
     }
 

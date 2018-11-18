@@ -1,8 +1,10 @@
 package com.burrich.spring_running.address;
 
+import java.util.List;
+
 public interface AddressService {
 
-    Iterable<Address> findAll();
+    List<Address> findAll();
     Address findById(Integer id);
     Address create(Address address);
     Address update(Integer id, Address address);
