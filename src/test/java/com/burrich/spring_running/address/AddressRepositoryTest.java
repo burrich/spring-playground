@@ -12,6 +12,8 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+// TODO: init tests (addresses fixtures)
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class AddressRepositoryTest {
@@ -49,5 +51,60 @@ public class AddressRepositoryTest {
         assertThat(addresses.size(), equalTo(2));
         assertEquals(addresses.get(0).getName(), "foo");
         assertEquals(addresses.get(1).getName(), "bar");
+    }
+
+    @Test
+    public void findById() {
+        Address address = new Address(
+                "foo",
+                "foo street",
+                00000,
+                "foo city",
+                "foo state",
+                "foo country"
+        );
+        this.entityManager.persist(address);
+
+        Integer addressId = address.getId();
+        Address addressFound = this.repository
+                .findById(addressId)
+                .orElseThrow(() -> new AddressNotFoundException(addressId));
+
+        assertEquals(addressFound.getName(), address.getName());
+    }
+
+    @Test
+    public void save() {
+        Address address = new Address(
+                "foo",
+                "foo street",
+                00000,
+                "foo city",
+                "foo state",
+                "foo country"
+        );
+
+        Address addressSaved = this.repository.save(address);
+        assertEquals(addressSaved, address);
+    }
+
+    @Test
+    public void deleteById() {
+        Address address = new Address(
+                "foo",
+                "foo street",
+                00000,
+                "foo city",
+                "foo state",
+                "foo country"
+        );
+        this.entityManager.persist(address);
+        this.repository.deleteById(address.getId());
+        
+        int addressesCount = this.repository
+                .findAll()
+                .size();
+
+        assertEquals(addressesCount, 0);
     }
 }
