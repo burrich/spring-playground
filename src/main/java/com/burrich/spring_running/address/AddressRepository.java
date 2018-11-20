@@ -1,6 +1,10 @@
 package com.burrich.spring_running.address;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface AddressRepository extends JpaRepository<Address, Integer> {
+import java.util.List;
+
+public interface AddressRepository extends CrudRepository<Address, Integer> {
+    @Override
+    List<Address> findAll();
 }
