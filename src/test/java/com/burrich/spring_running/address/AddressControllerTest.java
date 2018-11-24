@@ -1,6 +1,8 @@
 package com.burrich.spring_running.address;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -33,11 +35,11 @@ public class AddressControllerTest {
     @MockBean
     private AddressService service;
 
-    @Test
-    public void getAllAddresses() throws Exception {
-        List<Address> addresses = new ArrayList<>();
+    private List<Address> addresses = new ArrayList<>();
 
-        Address address1 = new Address(
+    @Before
+    public void init() {
+        Address address = new Address(
                 0,
                 "foo",
                 "foo street",
@@ -46,9 +48,9 @@ public class AddressControllerTest {
                 "foo state",
                 "foo country"
         );
-        addresses.add(address1);
+        addresses.add(address);
 
-        Address address2 = new Address(
+        address = new Address(
                 1,
                 "bar",
                 "bar street",
@@ -57,57 +59,56 @@ public class AddressControllerTest {
                 "bar state",
                 "bar country"
         );
-        addresses.add(address2);
+        addresses.add(address);
+    }
 
-        given(this.service.findAll())
+    @After
+    public void clean() {
+        addresses.clear();
+    }
+
+    @Test
+    public void getAllAddresses() throws Exception {
+        given(service.findAll())
                 .willReturn(addresses);
 
-        this.mvc.perform(get("/api/addresses"))
+        mvc.perform(get("/api/addresses"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].name", is(address1.getName())))
-                .andExpect(jsonPath("$[1].name", is(address2.getName())));
+                .andExpect(jsonPath("$[0].id", is(addresses.get(0).getId())))
+                .andExpect(jsonPath("$[1].id", is(addresses.get(1).getId())));
     }
 
     @Test
     public void getAddressById() throws Exception {
         Integer addressId = 0;
-        Address address = new Address(
-                addressId,
-                "foo",
-                "foo street",
-                00000,
-                "foo city",
-                "foo state",
-                "foo country"
-        );
 
-        given(this.service.findById(addressId))
-                .willReturn(address);
+        given(service.findById(addressId))
+                .willReturn(addresses.get(addressId));
 
-        this.mvc.perform(get("/api/addresses/" + addressId))
+        mvc.perform(get("/api/addresses/" + addressId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(addressId)));
     }
 
     @Test
     public void addNewAddress() throws Exception {
-        Integer addressId = 0;
+        Integer addressId = addresses.size();
         Address address = new Address(
                 addressId,
-                "foo",
-                "foo street",
-                00000,
-                "foo city",
-                "foo state",
-                "foo country"
+                "random",
+                "random street",
+                22222,
+                "random city",
+                "random state",
+                "random country"
         );
         String addressJson = mapper.writeValueAsString(address);
 
-        given(this.service.create(ArgumentMatchers.any(Address.class)))
+        given(service.create(ArgumentMatchers.any(Address.class)))
                 .willReturn(address);
 
-        this.mvc.perform(post("/api/addresses")
+        mvc.perform(post("/api/addresses")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(addressJson))
                 .andExpect(status().isCreated())
@@ -117,43 +118,28 @@ public class AddressControllerTest {
     @Test
     public void updateAddress() throws Exception {
         Integer addressId = 0;
-        Address address = new Address(
-                addressId,
-                "foo",
-                "foo street",
-                00000,
-                "foo city",
-                "foo state",
-                "foo country"
-        );
+        Address address = addresses.get(0);
+        address.setName("foo updated");
+
         String addressJson = mapper.writeValueAsString(address);
 
-        given(this.service.update(
+        given(service.update(
                     eq(addressId),
                     ArgumentMatchers.any(Address.class)))
                 .willReturn(address);
 
-        this.mvc.perform(put("/api/addresses/" + addressId)
+        mvc.perform(put("/api/addresses/" + addressId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(addressJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(addressId)));
+                .andExpect(jsonPath("$.name", is(addresses.get(addressId).getName())));
     }
 
     @Test
     public void removeAddress() throws Exception {
         Integer addressId = 0;
-        Address address = new Address(
-                addressId,
-                "foo",
-                "foo street",
-                00000,
-                "foo city",
-                "foo state",
-                "foo country"
-        );
 
-        this.mvc.perform(delete("/api/addresses/" + addressId))
+        mvc.perform(delete("/api/addresses/" + addressId))
                 .andExpect(status().isNoContent());
     }
 }
