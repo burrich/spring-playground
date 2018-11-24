@@ -32,6 +32,11 @@ public class Address {
         this.country = country;
     }
 
+    public Address(Integer id, String name, String street, int postalCode, String city, String state, String country) {
+        this(name, street, postalCode, city, state, country);
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
